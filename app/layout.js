@@ -1,7 +1,18 @@
+import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
+const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const serif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
+});
+const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
+
 export const metadata = {
-  title: "Mudassir Ansari · ML engineer in the making",
+  title: "Mudassir Ansari · ML engineer",
   description:
     "Mudassir Ansari: machine learning, deep learning, LLMs, RAG and agents. Associate Consultant at a RegTech company.",
   icons: {
@@ -20,7 +31,7 @@ const themeInit =
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <noscript>
