@@ -148,7 +148,7 @@ const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 const compile = (gl, type, source) => {
     const shader = gl.createShader(type);
-    if (!shader) return null;
+    if (!shader) return null; 
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
     if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;

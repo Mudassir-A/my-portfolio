@@ -10,16 +10,18 @@ export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#faf6ee",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <noscript>
-          <style>{".rv{opacity:1!important;transform:none!important}"}</style>
-        </noscript>
+        <script dangerouslySetInnerHTML={{ __html: `
+          try {
+            const theme = localStorage.getItem("portfolio-theme");
+            if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+          } catch {}
+        ` }} />
       </head>
       <body>{children}</body>
     </html>

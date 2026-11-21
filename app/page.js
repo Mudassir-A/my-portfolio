@@ -1,3 +1,4 @@
+import ClickMotion from "../components/ClickMotion";
 import Header from "../components/Header";
 import Intro from "../components/Intro";
 import {
@@ -16,6 +17,7 @@ export default function Page() {
     <>
       <a className="skip" href="#main">Skip to content</a>
       <Header />
+      <ClickMotion />
       <main id="main">
         <Intro />
         <Summary />

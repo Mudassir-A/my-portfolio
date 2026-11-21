@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { NAME, NAV } from "../lib/data";
+import ThemeToggle from "./ThemeToggle";
+import ScrollBar from "./ScrollBar";
 
 export default function Header() {
   const [active, setActive] = useState("");
@@ -39,7 +41,9 @@ export default function Header() {
             </li>
           ))}
         </ul>
+        <ThemeToggle />
       </nav>
+      <ScrollBar />
     </header>
   );
 }
