@@ -1,23 +1,29 @@
-import ScrollBar from "../components/ScrollBar";
-import Backdrop from "../components/Backdrop";
 import Header from "../components/Header";
-import Hero from "../components/Hero";
-import { About, Skills, Projects, Education, Experience, Contact } from "../components/Sections";
+import Intro from "../components/Intro";
+import {
+  Summary,
+  Skills,
+  Experience,
+  Education,
+  Projects,
+  Certifications,
+  Contact,
+} from "../components/Sections";
 import Footer from "../components/Footer";
 
 export default function Page() {
   return (
     <>
-      <ScrollBar />
-      <Backdrop />
+      <a className="skip" href="#main">Skip to content</a>
       <Header />
-      <main>
-        <Hero />
-        <About />
+      <main id="main">
+        <Intro />
+        <Summary />
         <Skills />
-        <Projects />
-        <Education />
         <Experience />
+        <Education />
+        <Projects />
+        <Certifications />
         <Contact />
       </main>
       <Footer />

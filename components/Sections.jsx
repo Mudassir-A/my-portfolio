@@ -1,191 +1,164 @@
-"use client";
-import { useState } from "react";
 import Reveal from "./Reveal";
 import {
-  ABOUT,
-  HOW_I_WORK,
-  SKILL_GROUPS,
-  PROJECTS,
-  FILTERS,
-  EDUCATION,
+  SUMMARY,
+  SKILLS,
   EXPERIENCE,
+  EDUCATION,
+  PROJECTS,
+  CERTIFICATIONS,
   EMAIL,
-  SOCIALS,
+  PHONE,
+  PHONE_HREF,
+  LINKEDIN,
+  GITHUB,
 } from "../lib/data";
 
-function Head({ n, tag, title, sub }) {
+function Section({ id, title, children }) {
   return (
-    <Reveal className="head">
-      <div className="head-num">
-        {n} <span>/ 06</span>
-      </div>
-      <span className="tag">{tag}</span>
-      <h2>{title}</h2>
-      {sub && <p className="sub">{sub}</p>}
+    <Reveal as="section" id={id} className="section" aria-labelledby={`${id}-h`}>
+      <h2 id={`${id}-h`}>{title}</h2>
+      {children}
     </Reveal>
   );
 }
 
-export function About() {
+function Points({ items }) {
   return (
-    <section id="about">
-      <Head n="01" tag="about" title="The short version." />
-      <div className="about-grid">
-        <Reveal className="about-text">
-          {ABOUT.map((p) => (
-            <p key={p}>{p}</p>
-          ))}
-        </Reveal>
-        <Reveal className="panel">
-          <h3 className="panel-title">how i work</h3>
-          <ol className="loop">
-            {HOW_I_WORK.map(([title, desc], i) => (
-              <li key={title}>
-                <span className="n">{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <b>{title}</b>
-                  <p className="d">{desc}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </Reveal>
-      </div>
-    </section>
+    <ul className="points">
+      {items.map((p) => (
+        <li key={p}>{p}</li>
+      ))}
+    </ul>
+  );
+}
+
+export function Summary() {
+  return (
+    <Section id="summary" title="Profile Summary">
+      <p className="prose">{SUMMARY}</p>
+    </Section>
   );
 }
 
 export function Skills() {
   return (
-    <section id="skills">
-      <Head
-        n="02"
-        tag="skills"
-        title="Tools I use to ship."
-        sub="Grouped by what I use them for."
-      />
-      <div className="skill-grid">
-        {SKILL_GROUPS.map((g, i) => (
-          <Reveal className="panel" i={i} key={g.title}>
-            <h3 className="panel-title">{g.title}</h3>
-            <ul className="chips">
-              {g.items.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-            </ul>
-          </Reveal>
+    <Section id="skills" title="Technical Skills">
+      <dl className="skills">
+        {SKILLS.map(([group, items]) => (
+          <div key={group} className="skill-row">
+            <dt>{group}</dt>
+            <dd>{items}</dd>
+          </div>
         ))}
-      </div>
-    </section>
-  );
-}
-
-export function Projects() {
-  const [filter, setFilter] = useState("all");
-  const list = filter === "all" ? PROJECTS : PROJECTS.filter((p) => p.cat === filter);
-
-  return (
-    <section id="projects">
-      <Head
-        n="03"
-        tag="projects"
-        title="Things I've built."
-        sub="Small, end-to-end projects. Click through for the code."
-      />
-      <div className="tabs" role="tablist">
-        {FILTERS.map(([key, label]) => {
-          const count =
-            key === "all" ? PROJECTS.length : PROJECTS.filter((p) => p.cat === key).length;
-          return (
-            <button
-              key={key}
-              type="button"
-              role="tab"
-              aria-selected={filter === key}
-              className={`tab${filter === key ? " on" : ""}`}
-              onClick={() => setFilter(key)}
-            >
-              {label}
-              <i>{count}</i>
-            </button>
-          );
-        })}
-      </div>
-      <div className="grid">
-        {list.map((p, i) => (
-          <Reveal
-            as="a"
-            i={i}
-            key={p.title}
-            className="card"
-            href={p.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="k">{p.kind}</span>
-            <h3>{p.title}</h3>
-            <p>{p.text}</p>
-            <span className="go">view on github ↗</span>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Timeline({ items }) {
-  return (
-    <ol className="tl">
-      {items.map((e, i) => (
-        <Reveal as="li" i={i} key={e.title}>
-          <div className="meta">{e.place}</div>
-          <h3>{e.title}</h3>
-          <p>{e.text}</p>
-        </Reveal>
-      ))}
-    </ol>
-  );
-}
-
-export function Education() {
-  return (
-    <section id="education">
-      <Head n="04" tag="education" title="Where it started." />
-      <Timeline items={EDUCATION} />
-    </section>
+      </dl>
+    </Section>
   );
 }
 
 export function Experience() {
   return (
-    <section id="experience">
-      <Head n="05" tag="experience" title="Where I work now." />
-      <Timeline items={EXPERIENCE} />
-    </section>
+    <Section id="experience" title="Work Experience">
+      <ol className="entries">
+        {EXPERIENCE.map((e) => (
+          <li key={e.org} className="entry">
+            <div className="entry-head">
+              <h3>{e.role}</h3>
+              <span className="meta">{e.period}</span>
+            </div>
+            <p className="sub">{e.org}, {e.place}</p>
+            <Points items={e.points} />
+          </li>
+        ))}
+      </ol>
+    </Section>
+  );
+}
+
+export function Education() {
+  return (
+    <Section id="education" title="Education">
+      <ol className="entries">
+        {EDUCATION.map((e) => (
+          <li key={e.degree} className="entry">
+            <div className="entry-head">
+              <h3>{e.degree}</h3>
+              <span className="meta">{e.year}</span>
+            </div>
+            <p className="sub">{e.school} · {e.score}</p>
+          </li>
+        ))}
+      </ol>
+    </Section>
+  );
+}
+
+export function Projects() {
+  return (
+    <Section id="projects" title="Projects">
+      <ol className="entries">
+        {PROJECTS.map((p) => (
+          <li key={p.title} className="entry">
+            <div className="entry-head">
+              <h3>{p.title}</h3>
+              <span className="meta">{p.date}</span>
+            </div>
+            <p className="sub">
+              {p.stack}
+              {p.url && (
+                <>
+                  {" · "}
+                  <a href={p.url} target="_blank" rel="noopener noreferrer">
+                    Link<span className="sr"> to {p.title} (opens in new tab)</span>
+                  </a>
+                </>
+              )}
+            </p>
+            <Points items={p.points} />
+          </li>
+        ))}
+      </ol>
+    </Section>
+  );
+}
+
+export function Certifications() {
+  return (
+    <Section id="certifications" title="Certifications">
+      <ul className="entries plain">
+        {CERTIFICATIONS.map(([name, issuer]) => (
+          <li key={name} className="entry">
+            <div className="entry-head">
+              <h3>{name}</h3>
+              <span className="meta">{issuer}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </Section>
   );
 }
 
 export function Contact() {
   return (
-    <section id="contact">
-      <Head
-        n="06"
-        tag="contact"
-        title="Want to work together?"
-        sub="Questions, feedback or a project in ML or LLMs? Email is the quickest way to reach me."
-      />
-      <Reveal className="contact">
-        <a className="btn btn-primary btn-lg" href={`mailto:${EMAIL}`}>
-          ✉ {EMAIL}
-        </a>
-        <div className="socials">
-          {SOCIALS.map(([label, url]) => (
-            <a key={label} className="btn" href={url} target="_blank" rel="noopener noreferrer">
-              {label} ↗
-            </a>
-          ))}
+    <Section id="contact" title="Contact Details">
+      <dl className="skills">
+        <div className="skill-row">
+          <dt>Email</dt>
+          <dd><a href={`mailto:${EMAIL}`}>{EMAIL}</a></dd>
         </div>
-      </Reveal>
-    </section>
+        <div className="skill-row">
+          <dt>Phone</dt>
+          <dd><a href={`tel:${PHONE_HREF}`}>{PHONE}</a></dd>
+        </div>
+        <div className="skill-row">
+          <dt>LinkedIn</dt>
+          <dd><a href={LINKEDIN.url} target="_blank" rel="noopener noreferrer">{LINKEDIN.label}</a></dd>
+        </div>
+        <div className="skill-row">
+          <dt>GitHub</dt>
+          <dd><a href={GITHUB.url} target="_blank" rel="noopener noreferrer">{GITHUB.label}</a></dd>
+        </div>
+      </dl>
+    </Section>
   );
 }

@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-// Fades an element in once it scrolls into view.
-export default function Reveal({ as: Tag = "div", i = 0, className = "", children, ...rest }) {
+// Fades an element in and slides it up once it enters the viewport.
+export default function Reveal({ as: Tag = "div", className = "", children, ...rest }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -19,14 +19,14 @@ export default function Reveal({ as: Tag = "div", i = 0, className = "", childre
           io.disconnect();
         }
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
   return (
-    <Tag ref={ref} className={`rv ${className}`} style={{ "--i": i }} {...rest}>
+    <Tag ref={ref} className={`rv ${className}`.trim()} {...rest}>
       {children}
     </Tag>
   );
